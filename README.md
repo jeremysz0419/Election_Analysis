@@ -41,3 +41,43 @@ Our script follows a logic in which the variables can be changed, added, and for
         entity_votes[entity_name] += 1
 ```
 As long as the data of the election is formatted in rows by individual votes, the code logic above can be used to extract election results and any sub-categories of that election. For example, if our data included a new row of data by "age group" or "job status", we would simply change the variable "x" within ```entity_name = row[x]``` to extract the information from that row. The rest of the script would extract a list of all the different options within the row and aggregate the amount of rows (or votes) within that option to the ```entity_votes``` dictionary. Say we enter a row containing the job status of each voter ("unemployed", "student", "part-time", "full-time"), the script will automatically show the different job statuses and a dictionary showing the amount of votes each job status had. 
+
+Likewise, our logic below can be altered to show the "winning" entity of any election. 
+```
+winning_candidate = ""
+winning_count = 0
+winning_percentage = 0
+
+for candidate_name in candidate_votes:
+
+        # Retrieve vote count and percentage
+        votes = candidate_votes.get(candidate_name)
+        vote_percentage = float(votes) / float(total_votes) * 100
+        candidate_results = (
+            f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+
+        # Print each candidate's voter count and percentage to the
+        # terminal.
+        print(candidate_results)
+        #  Save the candidate results to our text file.
+        txt_file.write(candidate_results)
+
+        # Determine winning vote count, winning percentage, and candidate.
+       ** if (votes > winning_count) and (vote_percentage > winning_percentage):
+            winning_count = votes
+            winning_candidate = candidate_name
+            winning_percentage = vote_percentage**
+
+    # Print the winning candidate (to terminal)
+    winning_candidate_summary = (
+        f"-------------------------\n"
+        f"Winner: {winning_candidate}\n"
+        f"Winning Vote Count: {winning_count:,}\n"
+        f"Winning Percentage: {winning_percentage:.1f}%\n"
+        f"-------------------------\n")
+    print(winning_candidate_summary)
+
+    # Save the winning candidate's name to the text file
+    txt_file.write(winning_candidate_summary)
+```
+We could use this for loop to find the winner or entity with the most votes from an election. Our ```if``` statement will always determine the which entity within our election list carried the most votes. Therefore by changing just the variables we can achieve the same result in any election or any new subcategories/data in an election (bolded code). Our script is easily modifiable for any election as long as the data retrieved remains in the same general format in which each individual vote is placed in rows. 
